@@ -5,7 +5,15 @@ import java.util.Scanner;
 public class Flights {
     Scanner get = new Scanner(System.in);
     private ArrayList<FlightSchedule> flightSchedules = new ArrayList<>();
-    private ArrayList<String> ticket = new ArrayList<>();//1402-03-10
+    private ArrayList<String> ticket = new ArrayList<>();
+    private ArrayList<FlightSchedule> flightId = new ArrayList<>();
+    private ArrayList<FlightSchedule> origin = new ArrayList<>();
+    private ArrayList<FlightSchedule> destination = new ArrayList<>();
+    private ArrayList<FlightSchedule> time = new ArrayList<>();
+    private ArrayList<FlightSchedule> date = new ArrayList<>();
+    private ArrayList<FlightSchedule> price = new ArrayList<>();
+    private ArrayList<FlightSchedule> seats = new ArrayList<>();
+
     public void addDefault() {
         flightSchedules.add(new FlightSchedule("WS-12", "Yazd", "Isfahan", "12:31", "1402-03-14", "700,000", "12"));
         flightSchedules.add(new FlightSchedule("WA-43", "Tehran", "Isfahan", "00:31", "1402-02-14", "1,000,000", "119"));
@@ -61,35 +69,22 @@ public class Flights {
         flightSchedules.remove(number);
     }
 
-
-
     public void updateFlight() {
-
+        String[] informationArray = new String[7];
         System.out.print("the ID of flight =");
         String flightID = get.next();
         for (int i = 0; i < flightSchedules.size(); i++) {
             String id = flightSchedules.get(i).getFlight();
             if (Objects.equals(id, flightID)) {
-                System.out.print("flightID :");
-                String flightId = get.next();
-                System.out.print("origin :");
-                String origin = get.next();
-                System.out.print("destination :");
-                String destination = get.next();
-                System.out.print("time :");
-                String time = get.next();
-                System.out.print("date :");
-                String date = get.next();
-                System.out.print("price :");
-                String price = get.next();
-                System.out.print("seats :");
-                String seats = get.next();
-                flightSchedules.get(i).setFlight(flightId, origin, destination, time, date, price, seats);
+                fill(informationArray);
+                flightSchedules.get(i).setFlight(informationArray[0], informationArray[1], informationArray[2], informationArray[3], informationArray[4], informationArray[5], informationArray[6]);
 
             }
         }
 
     }
+
+
 
     public void printFlightSchedules() {
 
@@ -100,29 +95,45 @@ public class Flights {
         }
     }
 
-    public String search() {
-        for (int i = 0; i < flightSchedules.size(); i++) {
 
-        }
 
-        return "0";
-    }
+//    public String bookTicket() {
+//
+//        String flightId = search();
+//        for (int i = 0; i < flightSchedules.size(); i++) {
+//            if (Objects.equals(flightId, flightSchedules.get(i).getFlight())) {
+//
+//            }
+//        }
+//        return "0";
+//    }
+//
+//    public String ticketId(String flightID) {
+//        char[] id = flightID.toCharArray();
+//        //id[4]=id[]+;
+//
+//        return flightID;
+//    }
 
-    public String bookTicket() {
 
-        String flightId = search();
-        for (int i = 0; i < flightSchedules.size(); i++) {
-            if (Objects.equals(flightId, flightSchedules.get(i).getFlight())) {
+    public void fill(String[] fillArray) {
 
-            }
-        }
-        return "0";
-    }
 
-    public String ticketId(String flightID) {
-        char[] id = flightID.toCharArray();
-        //id[4]=id[]+;
+        System.out.println("please fill the information you want");
+        System.out.print("flightID :");
+        fillArray[0] = get.nextLine();
+        System.out.print("origin :");
+        fillArray[1] = get.nextLine();
+        System.out.print("destination :");
+        fillArray[2] = get.nextLine();
+        System.out.print("time :");
+        fillArray[3] = get.nextLine();
+        System.out.print("date :");
+        fillArray[4] = get.nextLine();
+        System.out.print("price :");
+        fillArray[5] = get.nextLine();
+        System.out.print("seats :");
+        fillArray[6] = get.nextLine();
 
-        return flightID;
     }
 }
