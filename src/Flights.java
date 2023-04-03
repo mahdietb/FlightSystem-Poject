@@ -49,21 +49,9 @@ public class Flights {
     }
 
     public void addFlight() {
-        System.out.print("flightID :");
-        String flightID = get.next();
-        System.out.print("origin :");
-        String origin = get.next();
-        System.out.print("destination :");
-        String destination = get.next();
-        System.out.print("time :");
-        String time = get.next();
-        System.out.print("date :");
-        String date = get.next();
-        System.out.print("price :");
-        String price = get.next();
-        System.out.print("seats :");
-        String seats = get.next();
-        flightSchedules.add(new FlightSchedule(flightID, origin, destination, time, date, price, seats));
+        String[] informationArray = new String[7];
+        fill(informationArray);
+        flightSchedules.add(new FlightSchedule(informationArray[0], informationArray[1], informationArray[2], informationArray[3], informationArray[4], informationArray[5], informationArray[6]));
     }
 
     public void removeFlight() {
@@ -72,6 +60,8 @@ public class Flights {
         int number = get.nextInt();
         flightSchedules.remove(number);
     }
+
+
 
     public void updateFlight() {
 
