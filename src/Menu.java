@@ -6,7 +6,7 @@ public class Menu {
     Scanner get = new Scanner(System.in);
 
 
-    private Users users;
+    private Users users = new Users();
     private Flights flights = new Flights();
 
     public int printWelcomeMenu() {
@@ -69,7 +69,7 @@ public class Menu {
         }
         System.out.println();
         for (int i = 0; i < 30; i++) {
-            System.out.println(".");
+            System.out.print(".");
         }
         System.out.println();
         System.out.println("<1> Change Password");
@@ -85,8 +85,9 @@ public class Menu {
     public int mainMenu() {
 
         int x = printWelcomeMenu();
-
-
+        int[] signInCheck = new int[1];
+        String[] userName = new String[1];
+        long credit=0;
         while (x != 3) {
 
             switch (x) {
@@ -98,7 +99,14 @@ public class Menu {
 
 
                 case 2:
-                    users.signIn();
+                    users.signIn(signInCheck,userName);
+
+
+                    if (signInCheck[0] == 1) {
+                        enteringAdminMenu();
+                    } else if (signInCheck[0] == 2) {
+                        enteringUserMenu();
+                    }
                     break;
 
 
@@ -155,10 +163,7 @@ public class Menu {
 
     public void enteringUserMenu() {
         int option;
-        userMenu();
-        System.out.println("option =");
-        option = get.nextInt();
-
+        String[] checkId = new String[1];
         int flag = 0;
         while (flag == 0) {
             userMenu();
@@ -170,12 +175,16 @@ public class Menu {
                     users.changePassword();
                     break;
                 case 2:
+                    flights.check(checkId);
                     break;
                 case 3:
+                    flights.bookTicket(checkId);
                     break;
                 case 4:
+                    flights.cancellation();
                     break;
                 case 5:
+                    flights.bookedTickets();
                     break;
                 case 6:
                     users.addCharge();

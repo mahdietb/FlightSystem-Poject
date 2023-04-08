@@ -6,9 +6,10 @@ public class User {
     private String password;
     private  long charge;
 
-    public User(String userName, String password) {
+    public User(String userName, String password, long charge) {
         this.userName = userName;
         this.password = password;
+        this.charge = charge;
     }
 
     public long getCharge() {

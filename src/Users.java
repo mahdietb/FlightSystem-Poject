@@ -4,7 +4,8 @@ import java.util.Scanner;
 
 public class Users {
     Scanner get = new Scanner(System.in);
-    private ArrayList<User> users = new ArrayList<>();
+    private static ArrayList<User> users = new ArrayList<>();
+    private static ArrayList<String> name = new ArrayList<>();
 
     public Admin getAdmin() {
         return admin;
@@ -20,37 +21,39 @@ public class Users {
     private Menu menu;
 
     public void signUp() {
-
+        users.add(new User("mahdiehtb", "756402mt",0));
         System.out.println("please fill the wanted information to sign up");
         System.out.print("username = ");
         String userName = get.next();
         System.out.println();
         System.out.print("password = ");
         String password = get.next();
-        users.add(new User(userName, password));
+        users.add(new User(userName, password,0));
     }
 
 
-    public String signIn() {
+    public void signIn(int[] check, String[] username) {
 
-        users.add(new User("mahdiehtb", "756402mt"));
+
         System.out.println("welcome please enter your information");
         System.out.print("username = ");
-        String username = get.next();
+        username[0] = get.next();
+
         System.out.println();
         System.out.print("password = ");
         String password = get.next();
         for (int i = 0; i < users.size(); i++) {
             String usernameCheck = String.valueOf(users.get(i).getUserName());
             String passwordCheck = String.valueOf(users.get(i).getPassword());
-            if ((Objects.equals(username, admin.getUserName())) && (Objects.equals(password, admin.getPassword()))) {
-                menu.enteringAdminMenu();
-            } else if (Objects.equals(usernameCheck, username) && (Objects.equals(passwordCheck, password))) {
-
+            if ((Objects.equals(username[0], admin.getUserName())) && (Objects.equals(password, admin.getPassword()))) {
+                check[0] = 1;
+            } else if (Objects.equals(usernameCheck, username[0]) && (Objects.equals(passwordCheck, password))) {
+                check[0] = 2;
+                name.add(0, usernameCheck);
             }
         }
 
-        return username;
+
     }
 
 
@@ -79,18 +82,39 @@ public class Users {
 
     public void addCharge() {
         long addingCharge;
+        int[] array = new int[1];
+        String[] userNameArray = new String[1];
+
         System.out.println("please enter the amount you want to add = ");
         addingCharge = get.nextInt();
-        long charge;
-        String userName = signIn();
+        long charge = 0;
+        for (int i = 0; i < users.size(); i++) {
+            if (Objects.equals(name.get(0), users.get(i).getUserName())) {
+
+                charge = users.get(i).getCharge();
+
+                charge = addingCharge + charge;
+                users.get(i).setCharge(charge);
+
+            }
+
+        }
+    }
+
+    public long returnCharge() {
+        long charge = 0;
 
         for (int i = 0; i < users.size(); i++) {
+            System.out.println(users.get(i).getUserName());
+            if (Objects.equals(name.get(0), users.get(i).getUserName())) {
 
-            String usernameCheck = String.valueOf(users.get(i).getUserName());
-        if (Objects.equals(userName, usernameCheck)){
-            charge=users.get(i).getCharge();
-            users.get(i).setCharge(addingCharge+charge);
+                charge = users.get(i).getCharge();
+
+            }
+
         }
-        }
+
+
+        return charge;
     }
 }
