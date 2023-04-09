@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class Flights {
     Scanner get = new Scanner(System.in);
-//    private User user;
-    private Users users=new Users();
+    //    private User user;
+    private Users users = new Users();
     private ArrayList<FlightSchedule> flightSchedules = new ArrayList<>();
     private ArrayList<String> ticket = new ArrayList<>();
     private ArrayList<FlightSchedule> flightId = new ArrayList<>();
@@ -73,17 +73,20 @@ public class Flights {
     }
 
     public void updateFlight() {
+        printFlightSchedules();
+        int indexNum;
         String[] informationArray = new String[7];
+        String[] numberArray = new String[7];
         System.out.print("the ID of flight =");
         String flightID = get.next();
-        for (FlightSchedule flightSchedule : flightSchedules) {
-            String id = flightSchedule.getFlight();
+        for (int i = 0; i < flightSchedules.size(); i++) {
+            String id = flightSchedules.get(i).getFlight();
             if (Objects.equals(id, flightID)) {
-                fill(informationArray);
-                flightSchedule.setFlight(informationArray[0], informationArray[1], informationArray[2], informationArray[3], informationArray[4], informationArray[5], informationArray[6]);
-
+                indexNum = i;
+                setOne(informationArray, indexNum, numberArray);
             }
         }
+
 
     }
 
@@ -103,7 +106,7 @@ public class Flights {
         for (int i = 0; i < 7; i++) {
             if (!Objects.equals(fillArray[i], "")) {
                 returnArray[i] = "1";
-            } else if (Objects.equals(fillArray[i], "")) {
+            } else {
                 returnArray[i] = "0";
             }
 
@@ -165,60 +168,64 @@ public class Flights {
     }
 
 
-    public void bookTicket(String []flightId) {
-        long x =0;
+    public void bookTicket(String[] flightId) {
+        long x = 0;
         String flightID;
         flightID = flightId[0];
         flightID = flightID.toLowerCase();
-        String ticketId = "FarazAir" +"00"+ flightID;
-        int possibility = checkCharge(flightId,x);
+        String ticketId = "FarazAir" + "00" + flightID;
+        int possibility = checkCharge(flightId, x);
         if (possibility == 1) {
             ticket.add(ticketId);
             ticket.add(flightId[0]);
-        }else {
+
+        } else {
             System.out.println("sorry your credit or the flight`s seats is not enough please check again ");
         }
 
     }
 
-    public int checkCharge( String[] id,long charge) {
+    public int checkCharge(String[] id, long charge) {
         int check = 0;
 
         for (int i = 0; i < flightSchedules.size(); i++) {
             if (Objects.equals(flightSchedules.get(i).getFlight(), id[0])) {
-               charge=users.returnCharge();
-
                 long price = Integer.parseInt(flightSchedules.get(i).getPrice());
                 int seats = Integer.parseInt(flightSchedules.get(i).getSeats());
-                if ( (charge>=price)&&(seats != 0)) {
+
+                charge = users.returnCharge();
+
+
+                if ((charge >= price) && (seats != 0)) {
                     check = 1;
-                }else {check=0;}
+                    String newSeats = String.valueOf(seats);
+                    users.returnLastCharge(charge, price, 1);
+                    returnSeats(newSeats, id[0]);
+
+                } else {
+                    check = 0;
+                }
             }
         }
         return check;
     }
 
-    public void cancellation(){
+    public void cancellation() {
         bookedTickets();
-        int x=0;
+        int x = 0;
         System.out.println("please choose the ticket you want to cancel:");
-        String canceledId=get.nextLine();
+        String canceledId = get.nextLine();
         for (int i = 0; i < ticket.size(); i++) {
-            if (i%2==0) {
+            if (i % 2 == 0) {
                 if (Objects.equals(ticket.get(i), canceledId)) {
-                   x=i;
+                    x = i;
 
                 }
             }
-        }ticket.remove(x);
+        }
+        ticket.remove(x);
         ticket.remove(x);
     }
-
-
-
-
-
-
 
 
     public void fill(String[] fillArray) {
@@ -227,25 +234,28 @@ public class Flights {
         System.out.println("please fill the information you want");
         System.out.print("flightID :");
         fillArray[0] = get.nextLine();
+        System.out.println();
         System.out.print("origin :");
         fillArray[1] = get.nextLine();
+        System.out.println();
         System.out.print("destination :");
         fillArray[2] = get.nextLine();
+        System.out.println();
         System.out.print("time :");
         fillArray[3] = get.nextLine();
+        System.out.println();
         System.out.print("date :");
         fillArray[4] = get.nextLine();
+        System.out.println();
         System.out.print("price :");
         fillArray[5] = get.nextLine();
+        System.out.println();
         System.out.print("seats :");
         fillArray[6] = get.nextLine();
 
     }
 
     public void fillForSearch(String[] getInfoArray, String[] forSearchArray) {
-        System.out.println("Attention if you dont want to fill the category below put a space and enter to fill the others");
-        System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
-        System.out.println("please fill the information you want");
         System.out.print("flightID :");
         getInfoArray[0] = get.nextLine();
         forSearchArray[0] = "flightID='" + getInfoArray[0] + '\'';
@@ -270,4 +280,56 @@ public class Flights {
 
     }
 
+    public void returnSeats(String seats, String flightId) {
+        int integerValue = Integer.parseInt(seats);
+        for (int i = 0; i < flightSchedules.size(); i++) {
+            if (Objects.equals(flightSchedules.get(i).getFlight(), flightId)) {
+                integerValue = integerValue - 1;
+                seats = String.valueOf(integerValue);
+                flightSchedules.get(i).setSeats(seats);
+            }
+        }
+
+
+    }
+
+    public void setItems(String[] fillInfo, String[] returnOne) {
+        fill(fillInfo);
+        setForUpdate(fillInfo, returnOne);
+
+    }
+
+    public void setForUpdate(String[] array, String[] newOne) {
+        for (int i = 0; i < array.length; i++) {
+            if (!Objects.equals(array[i], "")) {
+                newOne[i] = "1";
+            } else {
+                newOne[i] = "0";
+            }
+        }
+    }
+
+    public void setOne(String[] information, int index, String[] array) {
+        setItems(information, array);
+        for (int i = 0; i < array.length; i++) {
+            if (Objects.equals(array[i], "1")) {
+                if (i == 0) {
+                    flightSchedules.get(index).setFlightID(information[0]);
+                } else if (i == 1) {
+                    flightSchedules.get(index).setOrigin(information[1]);
+
+                } else if (i == 2) {
+                    flightSchedules.get(index).setDestination(information[2]);
+                } else if (i == 3) {
+                    flightSchedules.get(index).setTime(information[3]);
+                } else if (i == 4) {
+                    flightSchedules.get(index).setDate(information[4]);
+                } else if (i == 5) {
+                    flightSchedules.get(index).setPrice(information[5]);
+                } else if (i == 6) {
+                    flightSchedules.get(index).setSeats(information[6]);
+                }
+            }
+        }
+    }
 }

@@ -49,14 +49,31 @@ public class FlightSchedule {
 
     }
 
-    public void setFlight(String flightID,String origin,String destination,String time, String date, String price,String seats) {
+    public void setFlightID(String flightID) {
         this.flightID = flightID;
-        this.origin = origin;
-        this.destination = destination;
-        this.time= time;
-        this.date = date;
-        this.price = price;
+    }
 
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public void setSeats(String seats) {
         this.seats = seats;
     }
 

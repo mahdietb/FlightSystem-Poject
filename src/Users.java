@@ -21,20 +21,18 @@ public class Users {
     private Menu menu;
 
     public void signUp() {
-        users.add(new User("mahdiehtb", "756402mt",0));
         System.out.println("please fill the wanted information to sign up");
         System.out.print("username = ");
         String userName = get.next();
         System.out.println();
         System.out.print("password = ");
         String password = get.next();
-        users.add(new User(userName, password,0));
+        users.add(new User(userName, password, 0));
     }
 
 
     public void signIn(int[] check, String[] username) {
-
-
+        users.add(new User("mahdiehtb", "756402mt", 0));
         System.out.println("welcome please enter your information");
         System.out.print("username = ");
         username[0] = get.next();
@@ -65,11 +63,11 @@ public class Users {
 
             System.out.println("your password = ");
             password = get.next();
-            System.out.println("enter the new password you want =");
-            newPassword = get.next();
             for (int i = 0; i < users.size(); i++) {
                 String checkPassword = users.get(i).getPassword();
                 if (Objects.equals(checkPassword, password)) {
+                    System.out.println("enter the new password you want =");
+                    newPassword = get.next();
                     users.get(i).setPassword(newPassword);
                     flag = 1;
                 }
@@ -101,9 +99,26 @@ public class Users {
         }
     }
 
-    public long returnCharge() {
-        long charge = 0;
+    public void returnLastCharge(long lastCharge, long price, int x) {
 
+
+        for (int i = 0; i < users.size(); i++) {
+            System.out.println(users.get(i).getUserName());
+            if (Objects.equals(name.get(0), users.get(i).getUserName())) {
+
+                lastCharge = users.get(i).getCharge();
+                if (x == 1) {
+                    lastCharge = lastCharge - price;
+                    users.get(i).setCharge(lastCharge);
+                }
+            }
+        }
+
+    }
+
+    public long returnCharge() {
+
+        long charge = 0;
         for (int i = 0; i < users.size(); i++) {
             System.out.println(users.get(i).getUserName());
             if (Objects.equals(name.get(0), users.get(i).getUserName())) {
@@ -111,10 +126,17 @@ public class Users {
                 charge = users.get(i).getCharge();
 
             }
-
         }
-
-
         return charge;
+    }
+
+    public void checkInfo(String user, String password) {
+        int flag = 0;
+        char[] passwordArray = password.toCharArray();
+        char[] userArray = user.toCharArray();
+
+        if (passwordArray.length >= 4 && passwordArray.length <= 12) {
+            flag = 1;
+        }
     }
 }
