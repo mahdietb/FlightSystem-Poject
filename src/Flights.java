@@ -4,9 +4,9 @@ import java.util.Scanner;
 
 public class Flights {
     Scanner get = new Scanner(System.in);
-    //    private User user;
+
     private Users users = new Users();
-    private ArrayList<FlightSchedule> flightSchedules = new ArrayList<>();
+    private static ArrayList<FlightSchedule> flightSchedules = new ArrayList<>();
     private ArrayList<String> ticket = new ArrayList<>();
     private ArrayList<FlightSchedule> flightId = new ArrayList<>();
     private ArrayList<FlightSchedule> origin = new ArrayList<>();
@@ -41,13 +41,6 @@ public class Flights {
 
     }
 
-    public ArrayList<FlightSchedule> getFlightSchedules() {
-        return flightSchedules;
-    }
-
-    public void setFlightSchedules(ArrayList<FlightSchedule> flightSchedules) {
-        this.flightSchedules = flightSchedules;
-    }
 
     @Override
     public String toString() {
@@ -95,7 +88,7 @@ public class Flights {
 
         for (int i = 0; i < flightSchedules.size(); i++) {
             System.out.println(".....................................");
-            System.out.println("Flight" + i + ")" + flightSchedules.get(i).toString());
+            System.out.println("Flight" + (i+1) + ")" + flightSchedules.get(i).toString());
 
         }
     }
@@ -129,21 +122,23 @@ public class Flights {
 
     }
 
+
+
     public void check(String[] id) {
         addDefault();
         String[] checkString = new String[7];
         String[] checkArray = new String[7];
         String[] getInformation = new String[7];
         search(checkArray, getInformation, checkString);
-        checkArraylist(checkArray, checkString, 0, flightSchedules, flightId);
+        checkArraylist(checkArray, checkString, 0, this.flightSchedules, flightId);
         checkArraylist(checkArray, checkString, 1, flightId, origin);
         checkArraylist(checkArray, checkString, 2, origin, destination);
         checkArraylist(checkArray, checkString, 3, destination, time);
         checkArraylist(checkArray, checkString, 4, time, date);
         checkArraylist(checkArray, checkString, 5, date, price);
         checkArraylist(checkArray, checkString, 6, price, seats);
-        for (FlightSchedule seat : seats) {
-            System.out.println(seat.toString());
+        for (int i = 0; i < seats.size(); i++) {
+            System.out.println(seats.get(i));
         }
         System.out.print("please enter the id of your intended flight :");
         id[0] = get.nextLine();
@@ -200,8 +195,9 @@ public class Flights {
                     check = 1;
                     String newSeats = String.valueOf(seats);
                     users.returnLastCharge(charge, price, 1);
+                    System.out.println("last="+charge);
                     returnSeats(newSeats, id[0]);
-
+                    System.out.println("lastSeat="+newSeats);
                 } else {
                     check = 0;
                 }

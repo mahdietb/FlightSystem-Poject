@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.Objects;
+
 import java.util.Scanner;
 
 public class Menu {
@@ -162,6 +161,7 @@ public class Menu {
     }
 
     public void enteringUserMenu() {
+
         int option;
         String[] checkId = new String[1];
         int flag = 0;
