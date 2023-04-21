@@ -1,11 +1,10 @@
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Scanner;
 
 public class Flights {
-    Scanner get = new Scanner(System.in);
-
+    private Fill info = new Fill();
     private Users users = new Users();
+    private  static ArrayList<String> soldOut = new ArrayList<>();
     private static ArrayList<FlightSchedule> flightSchedules = new ArrayList<>();
     private ArrayList<String> ticket = new ArrayList<>();
     private ArrayList<FlightSchedule> flightId = new ArrayList<>();
@@ -15,7 +14,6 @@ public class Flights {
     private ArrayList<FlightSchedule> date = new ArrayList<>();
     private ArrayList<FlightSchedule> price = new ArrayList<>();
     private ArrayList<FlightSchedule> seats = new ArrayList<>();
-
 
     public void addDefault() {
         flightSchedules.add(new FlightSchedule("WS-12", "Yazd", "Isfahan", "12:31", "1402-03-14", "700000", "12"));
@@ -37,10 +35,30 @@ public class Flights {
         flightSchedules.add(new FlightSchedule("YU-71", "KishIsland", "Tehran", "21:30", "1402-03-30", "1700,000", "117"));
         flightSchedules.add(new FlightSchedule("WZ-54", "Shiraz", "chabahar", "11:40", "1402-01-27", "800000", "90"));
         flightSchedules.add(new FlightSchedule("PO-56", "Ramsar", "Tehran", "08:30", "1402-03-10", "800000", "9"));
-
-
     }
 
+
+    public ArrayList<FlightSchedule> getFlightSchedules() {
+        return flightSchedules;
+    }
+
+    public void setFlightSchedules(ArrayList<FlightSchedule> flightSchedules) {
+        Flights.flightSchedules = flightSchedules;
+    }
+
+    public ArrayList<String> getSoldOut() {
+        return soldOut;
+    }
+
+    public void setSoldOut(ArrayList<String> soldOut) {
+        Flights.soldOut = soldOut;
+    }
+
+    public void Empty() {
+        if (flightSchedules.isEmpty()) {
+            addDefault();
+        }
+    }
 
     @Override
     public String toString() {
@@ -52,35 +70,43 @@ public class Flights {
 
     }
 
-    public void addFlight() {
-        String[] informationArray = new String[7];
-        fill(informationArray);
+    public void addFlight(String[] informationArray) {
+        info.fill(informationArray);
         flightSchedules.add(new FlightSchedule(informationArray[0], informationArray[1], informationArray[2], informationArray[3], informationArray[4], informationArray[5], informationArray[6]));
     }
 
-    public void removeFlight() {
-
-        System.out.print("the number of flight =");
-        int number = get.nextInt();
-        flightSchedules.remove(number);
-    }
-
-    public void updateFlight() {
-        printFlightSchedules();
-        int indexNum;
-        String[] informationArray = new String[7];
-        String[] numberArray = new String[7];
-        System.out.print("the ID of flight =");
-        String flightID = get.next();
+    public void removeFlight(String id) {
+        int index = 0;
         for (int i = 0; i < flightSchedules.size(); i++) {
-            String id = flightSchedules.get(i).getFlight();
-            if (Objects.equals(id, flightID)) {
-                indexNum = i;
-                setOne(informationArray, indexNum, numberArray);
+            if (Objects.equals(flightSchedules.get(i).getFlight(), id)) {
+                index = i;
             }
         }
+        flightSchedules.remove(index);
+    }
 
+    public void updateFlight(String flightID) {
+        int indexNum;
+        int flag = 0;
+        String[] informationArray = new String[7];
+        String[] numberArray = new String[7];
 
+        for (int i = 0; i < soldOut.size(); i++) {
+            if (Objects.equals(soldOut.get(i), flightID)) {
+                flag = 1;
+            }
+        }
+        if (flag == 0) {
+            for (int i = 0; i < flightSchedules.size(); i++) {
+                String id = flightSchedules.get(i).getFlight();
+                if (Objects.equals(id, flightID)) {
+                    indexNum = i;
+                    setOne(informationArray, indexNum, numberArray);
+                }
+            }
+        }else {
+            System.out.println("Pay attention this flight has been already taken by a passenger so you cant update it!!");
+        }
     }
 
 
@@ -88,14 +114,14 @@ public class Flights {
 
         for (int i = 0; i < flightSchedules.size(); i++) {
             System.out.println(".....................................");
-            System.out.println("Flight" + (i+1) + ")" + flightSchedules.get(i).toString());
+            System.out.println("Flight" + (i + 1) + ")" + flightSchedules.get(i).toString());
 
         }
     }
 
     public void search(String[] returnArray, String[] fillArray, String[] searchArray) {
 
-        fillForSearch(fillArray, searchArray);
+        info.fillForSearch(fillArray, searchArray);
         for (int i = 0; i < 7; i++) {
             if (!Objects.equals(fillArray[i], "")) {
                 returnArray[i] = "1";
@@ -123,14 +149,13 @@ public class Flights {
     }
 
 
-
     public void check(String[] id) {
-        addDefault();
+        Empty();
         String[] checkString = new String[7];
         String[] checkArray = new String[7];
         String[] getInformation = new String[7];
         search(checkArray, getInformation, checkString);
-        checkArraylist(checkArray, checkString, 0, this.flightSchedules, flightId);
+        checkArraylist(checkArray, checkString, 0, flightSchedules, flightId);
         checkArraylist(checkArray, checkString, 1, flightId, origin);
         checkArraylist(checkArray, checkString, 2, origin, destination);
         checkArraylist(checkArray, checkString, 3, destination, time);
@@ -140,45 +165,18 @@ public class Flights {
         for (int i = 0; i < seats.size(); i++) {
             System.out.println(seats.get(i));
         }
-        System.out.print("please enter the id of your intended flight :");
-        id[0] = get.nextLine();
-    }
-
-
-    public void bookedTickets() {
-        for (int i = 0; i < ticket.size(); i++) {
-
-            if (i % 2 == 0) {
-                System.out.println(ticket.get(i));
-            } else {
-                for (int j = 0; j < flightSchedules.size(); j++) {
-                    if (Objects.equals(flightSchedules.get(j).getFlight(), ticket.get(i))) {
-                        System.out.println(flightSchedules.get(j));
-                    }
-                }
-                System.out.println("----------------------------------");
-            }
-
-        }
-    }
-
-
-    public void bookTicket(String[] flightId) {
-        long x = 0;
-        String flightID;
-        flightID = flightId[0];
-        flightID = flightID.toLowerCase();
-        String ticketId = "FarazAir" + "00" + flightID;
-        int possibility = checkCharge(flightId, x);
-        if (possibility == 1) {
-            ticket.add(ticketId);
-            ticket.add(flightId[0]);
-
-        } else {
-            System.out.println("sorry your credit or the flight`s seats is not enough please check again ");
-        }
+        System.out.println("please enter the id of your intended flight :");
+        id[0] = info.get(id[0]);
+        flightId.clear();
+        origin.clear();
+        destination.clear();
+        date.clear();
+        time.clear();
+        price.clear();
+        seats.clear();
 
     }
+
 
     public int checkCharge(String[] id, long charge) {
         int check = 0;
@@ -187,93 +185,27 @@ public class Flights {
             if (Objects.equals(flightSchedules.get(i).getFlight(), id[0])) {
                 long price = Integer.parseInt(flightSchedules.get(i).getPrice());
                 int seats = Integer.parseInt(flightSchedules.get(i).getSeats());
-
-                charge = users.returnCharge();
-
-
-                if ((charge >= price) && (seats != 0)) {
-                    check = 1;
-                    String newSeats = String.valueOf(seats);
-                    users.returnLastCharge(charge, price, 1);
-                    System.out.println("last="+charge);
-                    returnSeats(newSeats, id[0]);
-                    System.out.println("lastSeat="+newSeats);
-                } else {
-                    check = 0;
+//                charge = users.returnCharge();
+                for (int j = 0; j < users.getUsers().size(); j++) {
+                    if (Objects.equals(users.getUsers().get(j).getUserName(), Users.getName().get(0))) {
+                        charge = users.getUsers().get(j).getCharge();
+                        if ((charge >= price) && (seats != 0)) {
+                            check = 1;
+                            String newSeats = String.valueOf(seats);
+                            returnSeats(newSeats, id[0]);
+                            charge = charge - price;
+                            users.getUsers().get(j).setCharge(charge);
+                            System.out.println("lastCharge=" + users.getUsers().get(j).getCharge());
+                            System.out.println("lastSeats=" + flightSchedules.get(i).getSeats());
+                        } else {
+                            check = 0;
+                        }
+                    }
                 }
             }
+
         }
         return check;
-    }
-
-    public void cancellation() {
-        bookedTickets();
-        int x = 0;
-        System.out.println("please choose the ticket you want to cancel:");
-        String canceledId = get.nextLine();
-        for (int i = 0; i < ticket.size(); i++) {
-            if (i % 2 == 0) {
-                if (Objects.equals(ticket.get(i), canceledId)) {
-                    x = i;
-
-                }
-            }
-        }
-        ticket.remove(x);
-        ticket.remove(x);
-    }
-
-
-    public void fill(String[] fillArray) {
-
-
-        System.out.println("please fill the information you want");
-        System.out.print("flightID :");
-        fillArray[0] = get.nextLine();
-        System.out.println();
-        System.out.print("origin :");
-        fillArray[1] = get.nextLine();
-        System.out.println();
-        System.out.print("destination :");
-        fillArray[2] = get.nextLine();
-        System.out.println();
-        System.out.print("time :");
-        fillArray[3] = get.nextLine();
-        System.out.println();
-        System.out.print("date :");
-        fillArray[4] = get.nextLine();
-        System.out.println();
-        System.out.print("price :");
-        fillArray[5] = get.nextLine();
-        System.out.println();
-        System.out.print("seats :");
-        fillArray[6] = get.nextLine();
-
-    }
-
-    public void fillForSearch(String[] getInfoArray, String[] forSearchArray) {
-        System.out.print("flightID :");
-        getInfoArray[0] = get.nextLine();
-        forSearchArray[0] = "flightID='" + getInfoArray[0] + '\'';
-        System.out.print("origin :");
-        getInfoArray[1] = get.nextLine();
-        forSearchArray[1] = ", origin='" + getInfoArray[1] + '\'';
-        System.out.print("destination :");
-        getInfoArray[2] = get.nextLine();
-        forSearchArray[2] = ", destination='" + getInfoArray[2] + '\'';
-        System.out.print("time :");
-        getInfoArray[3] = get.nextLine();
-        forSearchArray[3] = ", time='" + getInfoArray[3] + '\'';
-        System.out.print("date :");
-        getInfoArray[4] = get.nextLine();
-        forSearchArray[4] = ", date='" + getInfoArray[4] + '\'';
-        System.out.print("price :");
-        getInfoArray[5] = get.nextLine();
-        forSearchArray[5] = ", price='" + getInfoArray[5] + '\'';
-        System.out.print("seats :");
-        getInfoArray[6] = get.nextLine();
-        forSearchArray[6] = ", seats='" + getInfoArray[6] + '\'';
-
     }
 
     public void returnSeats(String seats, String flightId) {
@@ -290,7 +222,7 @@ public class Flights {
     }
 
     public void setItems(String[] fillInfo, String[] returnOne) {
-        fill(fillInfo);
+        info.fill(fillInfo);
         setForUpdate(fillInfo, returnOne);
 
     }
@@ -328,4 +260,6 @@ public class Flights {
             }
         }
     }
+
+
 }

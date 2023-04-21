@@ -43,7 +43,6 @@ public class FlightSchedule {
     }
 
 
-
     public String getFlight() {
         return flightID;
 
@@ -89,4 +88,5 @@ public class FlightSchedule {
                 ", seats='" + seats + '\'' +
                 '}';
     }
+
 }

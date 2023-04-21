@@ -1,74 +1,91 @@
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Scanner;
+
 
 public class Users {
-    Scanner get = new Scanner(System.in);
+    private Fill fill = new Fill();
+    private Admins admin = new Admins();
     private static ArrayList<User> users = new ArrayList<>();
     private static ArrayList<String> name = new ArrayList<>();
 
-    public Admin getAdmin() {
-        return admin;
+    public static ArrayList<String> getName() {
+        return name;
     }
 
-    public void setAdmin(Admin admin) {
-        this.admin = admin;
+    public static void setName(ArrayList<String> name) {
+        Users.name = name;
     }
 
-    private Admin admin = new Admin("mahdiehtb", "756402mt");
+    public ArrayList<User> getUsers() {
+        return users;
+    }
 
-
-    private Menu menu;
+    public void setUsers(ArrayList<User> users) {
+        Users.users = users;
+    }
 
     public void signUp() {
+        String userName = null;
+        String password = null;
         System.out.println("please fill the wanted information to sign up");
         System.out.print("username = ");
-        String userName = get.next();
+        userName = fill.get(userName);
         System.out.println();
         System.out.print("password = ");
-        String password = get.next();
+        password = fill.get(password);
         users.add(new User(userName, password, 0));
+        System.out.println("your signup completed successfully");
+        System.out.println(users);
     }
 
 
-    public void signIn(int[] check, String[] username) {
-        users.add(new User("mahdiehtb", "756402mt", 0));
+    public int signIn(int check,String[]user) {
+        String password = null;
+        String username = null;
+        admin.Empty();
+
+        System.out.println(users);
+
         System.out.println("welcome please enter your information");
         System.out.print("username = ");
-        username[0] = get.next();
-
+        username = fill.get(username);
         System.out.println();
         System.out.print("password = ");
-        String password = get.next();
+        password = fill.get(password);
         for (int i = 0; i < users.size(); i++) {
-            String usernameCheck = String.valueOf(users.get(i).getUserName());
-            String passwordCheck = String.valueOf(users.get(i).getPassword());
-            if ((Objects.equals(username[0], admin.getUserName())) && (Objects.equals(password, admin.getPassword()))) {
-                check[0] = 1;
-            } else if (Objects.equals(usernameCheck, username[0]) && (Objects.equals(passwordCheck, password))) {
-                check[0] = 2;
-                name.add(0, usernameCheck);
+
+            if (Objects.equals(username, admin.getAdmins().get(0).getUserName()) && Objects.equals(password, admin.getAdmins().get(0).getPassword())) {
+                check = 1;
+            } else if (Objects.equals(users.get(i).getUserName(), username) && Objects.equals(users.get(i).getPassword(), password)) {
+                user[0]=username;
+                check = 2;
+                name.add(0, users.get(i).getUserName());
+            } else {
+                System.out.println("sorry the password is wrong");
+
             }
         }
-
-
+        return check;
     }
 
 
     public void changePassword() {
         int flag = 0;
-        String password;
-        String newPassword;
+        String password = null;
+        String newPassword = null;
+        for (int i = 0; i < users.size(); i++) {
+            System.out.println(users.get(i));
+        }
         while (flag == 0) {
-
             System.out.println("your password = ");
-            password = get.next();
+            password = fill.get(password);
             for (int i = 0; i < users.size(); i++) {
                 String checkPassword = users.get(i).getPassword();
                 if (Objects.equals(checkPassword, password)) {
                     System.out.println("enter the new password you want =");
-                    newPassword = get.next();
+                    newPassword = fill.get(newPassword);
                     users.get(i).setPassword(newPassword);
+                    System.out.println(users.get(i).getPassword());
                     flag = 1;
                 }
             }
@@ -79,12 +96,12 @@ public class Users {
     }
 
     public void addCharge() {
-        long addingCharge;
+        long addingCharge = 0;
         int[] array = new int[1];
         String[] userNameArray = new String[1];
 
         System.out.println("please enter the amount you want to add = ");
-        addingCharge = get.nextInt();
+        addingCharge = fill.get(addingCharge);
         long charge = 0;
         for (int i = 0; i < users.size(); i++) {
             if (Objects.equals(name.get(0), users.get(i).getUserName())) {
@@ -99,22 +116,22 @@ public class Users {
         }
     }
 
-    public void returnLastCharge(long lastCharge, long price, int x) {
-
-
-        for (int i = 0; i < users.size(); i++) {
-            System.out.println(users.get(i).getUserName());
-            if (Objects.equals(name.get(0), users.get(i).getUserName())) {
-
-                lastCharge = users.get(i).getCharge();
-                if (x == 1) {
-                    lastCharge = lastCharge - price;
-                    users.get(i).setCharge(lastCharge);
-                }
-            }
-        }
-
-    }
+//    public void returnLastCharge(long Charge) {
+//
+//
+//        for (int i = 0; i < users.size(); i++) {
+//            System.out.println(users.get(i).getUserName());
+//            if (Objects.equals(name.get(0), users.get(i).getUserName())) {
+//
+//                lastCharge = users.get(i).getCharge();
+//                if (x == 1) {
+//                    lastCharge = lastCharge - price;
+//                    users.get(i).setCharge(lastCharge);
+//                }
+//            }
+//        }
+//
+//    }
 
     public long returnCharge() {
 
@@ -130,13 +147,5 @@ public class Users {
         return charge;
     }
 
-    public void checkInfo(String user, String password) {
-        int flag = 0;
-        char[] passwordArray = password.toCharArray();
-        char[] userArray = user.toCharArray();
 
-        if (passwordArray.length >= 4 && passwordArray.length <= 12) {
-            flag = 1;
-        }
-    }
 }

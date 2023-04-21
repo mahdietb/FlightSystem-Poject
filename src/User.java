@@ -1,7 +1,5 @@
-import java.util.Scanner;
-
 public class User {
-    Scanner get=new Scanner(System.in);
+
     private String userName;
     private String password;
     private  long charge;
@@ -42,6 +40,12 @@ public class User {
     }
 
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", charge=" + charge +
+                '}';
+    }
 }
-
