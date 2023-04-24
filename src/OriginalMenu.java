@@ -33,37 +33,29 @@ public class OriginalMenu {
         return get.next();
     }
 
+    /**
+     * give the option at the mainMenu
+     */
+
     public void mainMenu() {
 
         String x = printWelcomeMenu();
 
         while (true) {
             int signInCheck = 0;
-            String[]user=new String[1];
+            String[] user = new String[1];
 
             switch (x) {
-
-                case "1":
-
-                    users.signUp();
-
-                    break;
-
-
-                case "2":
-
-                    signInCheck = users.signIn(signInCheck,user);
+                case "1" -> users.signUp();
+                case "2" -> {
+                    signInCheck = users.signIn(signInCheck, user);
                     System.out.println(signInCheck);
-
                     if (signInCheck == 1) {
                         adminMenu.enteringAdminMenu();
                     } else if (signInCheck == 2) {
                         usersMenu.enteringUserMenu(user[0]);
                     }
-
-                    break;
-
-
+                }
             }
 
             x = printWelcomeMenu();

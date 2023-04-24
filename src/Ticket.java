@@ -27,10 +27,10 @@ public class Ticket {
         this.flightId = flightId;
     }
 
-    public void data(String ticket, String flight,String name){
-        ticketId=ticket;
-        flightId=flight;
-        userName=name;
+    public void data(String ticket, String flight, String name) {
+        ticketId = ticket;
+        flightId = flight;
+        userName = name;
     }
 
 }

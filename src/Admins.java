@@ -7,14 +7,18 @@ public class Admins {
         return admins;
     }
 
-    public void Empty() {
+    /**
+     * to check if admin arraylist is empty or not
+     */
+    public void beingEmpty() {
         if (admins.isEmpty()) {
             firstAdd();
 
         }
     }
-    public void firstAdd(){
-        admins.add(new Admin("mahdiehtb","756402mt"));
+
+    public void firstAdd() {
+        admins.add(new Admin("mahdiehtb", "756402mt"));
     }
 
 }

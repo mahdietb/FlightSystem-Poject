@@ -1,8 +1,15 @@
 import java.util.Scanner;
 
 public class Fill {
-    Scanner get=new Scanner(System.in);
+    Scanner get = new Scanner(System.in);
+
+    /**
+     * this Method gets the info that we want
+     * @param getInfoArray get the information
+     * @param forSearchArray turn the given info to existent data in arrayList
+     */
     public void fillForSearch(String[] getInfoArray, String[] forSearchArray) {
+        get.nextLine();
         System.out.print("flightID :");
         getInfoArray[0] = get.nextLine();
         forSearchArray[0] = "flightID='" + getInfoArray[0] + '\'';
@@ -26,7 +33,13 @@ public class Fill {
         forSearchArray[6] = ", seats='" + getInfoArray[6] + '\'';
 
     }
+
+    /**
+     * simply get the information and save it in array
+     * @param fillArray for saving info
+     */
     public void fill(String[] fillArray) {
+        get.nextLine();
         System.out.println("please fill the information you want");
         System.out.print("flightID :");
         fillArray[0] = get.nextLine();
@@ -50,13 +63,14 @@ public class Fill {
         fillArray[6] = get.nextLine();
 
     }
-    public String get(String info){
-        info= get.next();
+
+    public String get(String info) {
+        info = get.nextLine();
         return info;
     }
 
-    public long get(long info){
-        info= get.nextLong();
+    public long get(long info) {
+        info = get.nextLong();
         return info;
     }
 }

@@ -27,22 +27,28 @@ public class Users {
     public void signUp() {
         String userName = null;
         String password = null;
+        int[] userCheck= new int [1];
+        int []passCheck=new int [1];
         System.out.println("please fill the wanted information to sign up");
         System.out.print("username = ");
         userName = fill.get(userName);
         System.out.println();
         System.out.print("password = ");
         password = fill.get(password);
+        flag(userName,password,userCheck,passCheck);
+        printError(userCheck, passCheck);
+        if ((userCheck[0]==0 )&&(passCheck[0]==0)){
         users.add(new User(userName, password, 0));
         System.out.println("your signup completed successfully");
-        System.out.println(users);
+        System.out.println(users);}
     }
 
 
-    public int signIn(int check,String[]user) {
+
+    public int signIn(int check, String[] user) {
         String password = null;
         String username = null;
-        admin.Empty();
+        admin.beingEmpty();
 
         System.out.println(users);
 
@@ -52,14 +58,14 @@ public class Users {
         System.out.println();
         System.out.print("password = ");
         password = fill.get(password);
-        for (int i = 0; i < users.size(); i++) {
+        for (User value : users) {
 
             if (Objects.equals(username, admin.getAdmins().get(0).getUserName()) && Objects.equals(password, admin.getAdmins().get(0).getPassword())) {
                 check = 1;
-            } else if (Objects.equals(users.get(i).getUserName(), username) && Objects.equals(users.get(i).getPassword(), password)) {
-                user[0]=username;
+            } else if (Objects.equals(value.getUserName(), username) && Objects.equals(value.getPassword(), password)) {
+                user[0] = username;
                 check = 2;
-                name.add(0, users.get(i).getUserName());
+                name.add(0, value.getUserName());
             } else {
                 System.out.println("sorry the password is wrong");
 
@@ -73,19 +79,19 @@ public class Users {
         int flag = 0;
         String password = null;
         String newPassword = null;
-        for (int i = 0; i < users.size(); i++) {
-            System.out.println(users.get(i));
+        for (User user : users) {
+            System.out.println(user);
         }
         while (flag == 0) {
             System.out.println("your password = ");
             password = fill.get(password);
-            for (int i = 0; i < users.size(); i++) {
-                String checkPassword = users.get(i).getPassword();
+            for (User user : users) {
+                String checkPassword = user.getPassword();
                 if (Objects.equals(checkPassword, password)) {
                     System.out.println("enter the new password you want =");
                     newPassword = fill.get(newPassword);
-                    users.get(i).setPassword(newPassword);
-                    System.out.println(users.get(i).getPassword());
+                    user.setPassword(newPassword);
+                    System.out.println(user.getPassword());
                     flag = 1;
                 }
             }
@@ -95,6 +101,9 @@ public class Users {
         }
     }
 
+    /**
+     * for adding charge for users
+     */
     public void addCharge() {
         long addingCharge = 0;
         int[] array = new int[1];
@@ -103,49 +112,48 @@ public class Users {
         System.out.println("please enter the amount you want to add = ");
         addingCharge = fill.get(addingCharge);
         long charge = 0;
-        for (int i = 0; i < users.size(); i++) {
-            if (Objects.equals(name.get(0), users.get(i).getUserName())) {
+        for (User user : users) {
+            if (Objects.equals(name.get(0), user.getUserName())) {
 
-                charge = users.get(i).getCharge();
+                charge = user.getCharge();
 
                 charge = addingCharge + charge;
-                users.get(i).setCharge(charge);
+                user.setCharge(charge);
 
             }
 
         }
     }
 
-//    public void returnLastCharge(long Charge) {
-//
-//
-//        for (int i = 0; i < users.size(); i++) {
-//            System.out.println(users.get(i).getUserName());
-//            if (Objects.equals(name.get(0), users.get(i).getUserName())) {
-//
-//                lastCharge = users.get(i).getCharge();
-//                if (x == 1) {
-//                    lastCharge = lastCharge - price;
-//                    users.get(i).setCharge(lastCharge);
-//                }
-//            }
-//        }
-//
-//    }
+    /**
+     * check if any users with this new user info does not exist
+     * @param name name of the user
+     * @param pass password of user
+     * @param flag1 check for name
+     * @param flag2 check for pass
+     */
+    public void flag(String name, String pass, int[] flag1, int[] flag2) {
 
-    public long returnCharge() {
-
-        long charge = 0;
-        for (int i = 0; i < users.size(); i++) {
-            System.out.println(users.get(i).getUserName());
-            if (Objects.equals(name.get(0), users.get(i).getUserName())) {
-
-                charge = users.get(i).getCharge();
-
+        for (User user : users) {
+            if (Objects.equals(user.getUserName(), name)) {
+                flag1[0] = 1;
+            } else if (Objects.equals(user.getPassword(), pass)) {
+                flag2[0] = 1;
             }
         }
-        return charge;
     }
 
+    /**
+     * printing error for existing username and password
+     * @param existentOfName check for name
+     * @param existentOfPass check for pass
+     */
+    public void printError(int[] existentOfName,int[] existentOfPass){
+        if (existentOfName[0]==1){
+            System.out.println("sorry this username is already taken please choose another one");
+        } else if (existentOfPass[0]==1) {
+            System.out.println("sorry this password is already taken please choose another one");
 
+        }
+    }
 }

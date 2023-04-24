@@ -2,7 +2,7 @@ public class User {
 
     private String userName;
     private String password;
-    private  long charge;
+    private long charge;
 
     public User(String userName, String password, long charge) {
         this.userName = userName;
@@ -23,12 +23,9 @@ public class User {
     }
 
 
-
-
     public String getPassword() {
         return password;
     }
-
 
 
     public void setUserName(String userName) {
